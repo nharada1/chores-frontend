@@ -2,21 +2,44 @@
 
 var React = require('react');
 var _ = require('lodash');
+var d3Pie = require('./d3Pie');
 
 var Chart = React.createClass({
-  getDefaultProps: function() {
-    return {
-      width: '100%',
-      height: '500px'
-    };
-  },
+    propTypes: {
+        people: React.PropTypes.array,
+        chores: React.PropTypes.array
+    },
 
-  render: function() {
-    return (
-      <div className="Chart"></div>
-    );
-  }
+    componentDidMount: function() {
+        var e = this.getDOMNode();
+        d3Pie.create(e, {
+            width: '500',
+            height: '500'
+        }, this.getChartState());
+    },
 
+    componentDidUpdate: function() {
+        var e = this.getDOMNode();
+        d3Pie.update(e, this.getChartState());
+    },
+
+    getChartState: function() {
+        return {
+            people: this.props.people,
+            chores: this.props.chores
+        };
+    },
+
+    componentWillUnmount: function() {
+        var e = this.getDOMNode();
+        d3Pie.destroy(e);
+    },
+
+    render: function() {
+        return (
+            <div className="Chart"></div>
+        );
+    }
 });
 
 module.exports = Chart;

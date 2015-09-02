@@ -6,7 +6,9 @@ var App = React.createClass({
 
 	getInitialState(){
 		return {
-			id: 'asdaasda'
+			id: 'asdaasda',
+            people: ['Nate', 'Paul', 'Moe'],
+            chores: ['Cook', 'Clean', 'Mop']
 		};
 	},
 
@@ -14,7 +16,10 @@ var App = React.createClass({
 		return (
 			<div>
 				<h1>Chore Chart</h1>
-				<Chart id={this.state.id}/>
+				<Chart 
+                    id={this.state.id} 
+                    people={this.state.people}
+                    chores={this.state.chores} />
 			</div>
 		);
 	}
