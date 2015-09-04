@@ -25,8 +25,7 @@ var Chart = React.createClass({
 
     getChartState: function() {
         return {
-            people: this.props.people,
-            chores: this.props.chores
+            data: this.props.data
         };
     },
 

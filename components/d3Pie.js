@@ -1,6 +1,12 @@
 var d3 = require('d3')
+var _ = require('lodash')
 
 var d3Pie = {};
+
+function rotateList(list, n) {
+    rot = n % list.length
+    return _.slice(list, -rot).concat(_.slice(list, rot, -rot));
+}
 
 d3Pie.create = function(e, props, state) {
     console.log(state);
@@ -22,8 +28,10 @@ d3Pie.update = function(e, state) {
 	    innerRadius = Math.min(width, height) / 4,
 	    outerRadius = Math.min(width, height) / 2;
 
-	var color = d3.scale.ordinal()
-	    .range(["#774F38", "#E08E79", "#F1D4AF", "#ECE5CE", "#C5E0DC"]);
+    var nSegments = state.data.people.length;
+
+    var allColors = _.slice(["#774F38", "#E08E79", "#F1D4AF", "#ECE5CE", "#C5E0DC"], 0, nSegments);
+	var color = d3.scale.ordinal().range(allColors);
 
 	var innerArc = d3.svg.arc()
 	    .outerRadius(innerRadius - 10)
@@ -37,8 +45,8 @@ d3Pie.update = function(e, state) {
 	    .sort(null)
 	    .value(function(d) { return 1; });
 
-	var data = state.people.map(function(d, i) {
-	    return {"person": state.people[i], "chore": state.chores[i]};
+	var data = state.data.people.map(function(d, i) {
+	    return {"person": state.data.people[i], "chore": rotateList(state.data.chores, state.data.offset)[i]};
 	});
 
     var base = d3.select(e).selectAll(".arc");
@@ -54,7 +62,7 @@ d3Pie.update = function(e, state) {
 
 	g.append("path")
 	  .attr("d", outerArc)
-	  .style("fill", function(d, i) { return color(i); });
+	  .style("fill", function(d, i) { return color(i+state.data.offset); });
 
 	g.append("text")
 	  .attr("transform", function(d) { return "translate(" + innerArc.centroid(d) + ")"; })
