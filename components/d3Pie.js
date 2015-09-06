@@ -3,9 +3,13 @@ var _ = require('lodash')
 
 var d3Pie = {};
 
-function rotateList(list, n) {
+function rotateList(list, n, forward) {
     rot = n % list.length
-    return _.slice(list, -rot).concat(_.slice(list, rot, -rot));
+    if (forward) {
+        return _.slice(list, rot).concat(_.slice(list, 0, rot));
+    } else {
+        return _.slice(list, -rot).concat(_.slice(list, 0, -rot));
+    }
 }
 
 d3Pie.create = function(e, props, state) {
@@ -46,7 +50,7 @@ d3Pie.update = function(e, state) {
 	    .value(function(d) { return 1; });
 
 	var data = state.data.people.map(function(d, i) {
-	    return {"person": state.data.people[i], "chore": rotateList(state.data.chores, state.data.offset)[i]};
+	    return {"person": state.data.people[i], "chore": rotateList(state.data.chores, state.data.offset, true)[i]};
 	});
 
     var base = d3.select(e).selectAll(".arc");
