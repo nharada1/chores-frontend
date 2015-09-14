@@ -1,20 +1,13 @@
 /** @jsx React.DOM */
 
 var React = require('react');
-
 var Chart = require('./Chart');
 
 var App = React.createClass({
 
 	getInitialState(){
 		return {
-			id: 'asdaasda',
-            data: {
-                people: ['Nate', 'Paul', 'Moe', 'Snowball', 'Bailey'],
-                chores: ['Cook', 'Clean', 'Mop', 'Wiffleball', 'Vacuum'],
-                days_per_rotation: 3,
-                offset: 2
-            }            
+            source: 'http://chores-backend.herokuapp.com/api/wheels/d41bb492-58cf-11e5-9b2b-6ad757790211',
 		};
 	},
 
@@ -22,10 +15,8 @@ var App = React.createClass({
 		return (
 			<div>
 				<h1>Chore Chart</h1>
-                <h2>Rotating every {this.state.data.days_per_rotation} days</h2>
 				<Chart 
-                    id={this.state.id} 
-                    data={this.state.data} />
+                    source={this.state.source} />
 			</div>
 		);
 	}
