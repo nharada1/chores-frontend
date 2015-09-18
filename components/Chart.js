@@ -13,14 +13,15 @@ var Chart = React.createClass({
                 this.setState({
                     data: result
                 });
+
+                var e = this.getDOMNode();
+                d3Pie.create(e, {
+                    width: '500',
+                    height: '500'
+                }, this.state);
             }
         }.bind(this));
 
-        var e = this.getDOMNode();
-        d3Pie.create(e, {
-            width: '500',
-            height: '500'
-        }, this.state);
     },
 
     componentDidUpdate: function() {
